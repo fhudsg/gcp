@@ -1,0 +1,22 @@
+#!/bin/bash
+
+index_main() {
+    if [ -d $HOME/.pyenv ]; then
+        echo 'Pythonをアンインストールします'
+        start=$(date +%s%N)
+        rm -rf .pyenv
+        end=$(date +%s%N)
+        echo 'アンインストールが完了しました'
+        echo "経過時間: $(($(($end-$start))/1000000000)) s"
+    else
+        echo 'エラー：Pythonの環境はインストールされていないか既にアンインストールされています．
+        インストールする場合は以下のコマンドを実行してください：
+
+        curl https://fhuds.github.io/gcp/install | sh
+        '
+
+        exit 1
+    fi
+}
+
+index_main

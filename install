@@ -1,0 +1,40 @@
+#!/bin/bash
+
+index_main() {
+    if [ -d $HOME/.pyenv ]; then
+        echo 'エラー：Pythonは既にインストールされています．
+        再インストールする場合は以下のコマンドを実行して環境をアンインストールしてください：
+
+        curl https://fhuds.github.io/gcp/uninstall | sh
+        '
+
+        exit 1
+    fi
+
+    echo 'Pythonのインストールを開始します'
+
+    start=$(date +%s%N)
+
+    curl https://pyenv.run | bash
+
+    # add to path
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    pyenv -v
+
+    # install python 3.12.2 and make default
+    pyenv install 3.12.2
+    pyenv global 3.12.2
+
+    end=$(date +%s%N)
+
+    echo 'Pythonのインストールが完了しました'
+    echo "経過時間: $(($(($end-$start))/1000000000)) s"
+}
+
+index_main
